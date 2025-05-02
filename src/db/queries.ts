@@ -40,8 +40,10 @@ export const getUnits = cache(async () => {
 		orderBy: (units, { asc }) => [asc(units.order)],
 		with: {
 			lessons: {
+				orderBy: (lessons, { asc }) => [asc(lessons.order)],
 				with: {
 					challenges: {
+						orderBy: (challenges, { asc }) => [asc(challenges.order)],
 						with: {
 							challengeProgress: {
 								where: eq(challengeProgress.userId, userId),
@@ -85,11 +87,10 @@ export const getCourseById = cache(async (courseId: number) => {
 		where: eq(courses.id, courseId),
 		with: {
 			units: {
+				orderBy: (units, { asc }) => [asc(units.order)],
 				with: {
 					lessons: {
-						with: {
-							challenges: true,
-						},
+						orderBy: (lessons, { asc }) => [asc(lessons.order)],
 					},
 				},
 			},
@@ -183,7 +184,6 @@ export const getLesson = cache(async (id?: number) => {
 	}
 
 	const normalizedChallenges = data.challenges.map((challenge) => {
-		// Check last if clause
 		const completed =
 			challenge.challengeProgress &&
 			challenge.challengeProgress.length > 0 &&
@@ -223,4 +223,53 @@ export const getLessonPercentage = cache(async () => {
 	);
 
 	return percentage;
+});
+
+const DAY_IN_MS = 1000 * 60 * 60 * 24;
+
+export const getUserSubscription = cache(async () => {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return null;
+	}
+
+	const data = await db.query.userSubscription.findFirst({
+		where: eq(userProgress.userId, userId),
+	});
+
+	if (!data) {
+		return null;
+	}
+
+	const isActive =
+		data.stripePriceId &&
+		// biome-ignore lint/style/noNonNullAssertion: No need
+		data.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
+
+	return {
+		...data,
+		isActive: !!isActive,
+	};
+});
+
+export const getTopTenUsers = cache(async () => {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return [];
+	}
+
+	const data = await db.query.userProgress.findMany({
+		orderBy: (userProgress, { desc }) => [desc(userProgress.points)],
+		limit: 10,
+		columns: {
+			userId: true,
+			userName: true,
+			userImageSrc: true,
+			points: true,
+		},
+	});
+
+	return data;
 });

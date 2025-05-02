@@ -1,7 +1,8 @@
 "use server";
 
+import { POINTS_TO_REFILL } from "@/constants";
 import db from "@/db/drizzle";
-import { getCourseById, getUserProgress } from "@/db/queries";
+import { getCourseById, getUserProgress, getUserSubscription } from "@/db/queries";
 import { challengeProgress, challenges, userProgress } from "@/db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
@@ -22,9 +23,9 @@ export const upsertUserProgress = async (courseId: number) => {
 		throw new Error("Course not found");
 	}
 
-	// if (course.units.length === 0 || !course.units[0].lessons.length) {
-	// 	throw new Error("Course is empty");
-	// }
+	if (course.units.length === 0 || !course.units[0].lessons.length) {
+		throw new Error("Course is empty");
+	}
 
 	const existingUserProgress = await getUserProgress();
 
@@ -60,7 +61,7 @@ export const reduceHearts = async (challengeId: number) => {
 	}
 
 	const currentUserProgress = await getUserProgress();
-	// TODO: Handle subscription query
+	const userSubscription = await getUserSubscription();
 
 	if (!currentUserProgress) {
 		throw new Error("User progress not found");
@@ -89,7 +90,9 @@ export const reduceHearts = async (challengeId: number) => {
 		return { error: "practice" };
 	}
 
-	// TODO: Handle subscription query
+	if (userSubscription?.isActive) {
+		return { error: "subscription" };
+	}
 
 	if (currentUserProgress.hearts === 0) {
 		return { error: "hearts" };
@@ -107,4 +110,33 @@ export const reduceHearts = async (challengeId: number) => {
 	revalidatePath("/quests");
 	revalidatePath("/leaderboard");
 	revalidatePath(`/lesson/${lessonId}`);
+};
+
+export const refillHearts = async () => {
+	const currentUserProgress = await getUserProgress();
+
+	if (!currentUserProgress) {
+		throw new Error("User progress not found");
+	}
+
+	if (currentUserProgress.hearts === 5) {
+		throw new Error("Hearts are already full");
+	}
+
+	if (currentUserProgress.points < POINTS_TO_REFILL) {
+		throw new Error("Not enough points to refill hearts");
+	}
+
+	await db
+		.update(userProgress)
+		.set({
+			points: currentUserProgress.points - POINTS_TO_REFILL,
+			hearts: 5,
+		})
+		.where(eq(userProgress.userId, currentUserProgress.userId));
+
+	revalidatePath("/shop");
+	revalidatePath("/learn");
+	revalidatePath("/quests");
+	revalidatePath("/leaderboard");
 };

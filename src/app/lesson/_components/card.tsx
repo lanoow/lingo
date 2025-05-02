@@ -49,7 +49,7 @@ export const Card = ({
 				selected && "border-sky-300 bg-sky-100 hover:bg-sky-100",
 				selected && status === "correct" && "border-green-300 bg-green-100 hover:bg-green-100",
 				selected && status === "wrong" && "border-rose-300 bg-rose-100 hover:bg-rose-100",
-				disabled && "pointer-events-none hover:bg-white",
+				disabled && "pointer-events-none hover:bg-white opacity-70",
 				type === "ASSIST" && "lg:p-3 w-full"
 			)}
 		>

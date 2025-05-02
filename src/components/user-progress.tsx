@@ -18,7 +18,7 @@ export const UserProgress = ({
 	hasActiveSubscription,
 }: Props) => {
 	return (
-		<div className="flex items-center justify-between gap-x-2 w-full">
+		<div className="flex items-center justify-between w-full gap-x-2">
 			<Link href="/courses">
 				<Button variant="ghost">
 					<Image
@@ -26,7 +26,7 @@ export const UserProgress = ({
 						alt={activeCourse.title}
 						width={32}
 						height={32}
-						className="rounded-md border"
+						className="border rounded-md"
 					/>
 				</Button>
 			</Link>
@@ -52,7 +52,7 @@ export const UserProgress = ({
 						className="mr-2"
 					/>
 					{hasActiveSubscription ?
-						<InfinityIcon className="size-4 stroke-3" />
+						<InfinityIcon className="size-4 stroke-3 shrink-0" />
 						: hearts
 					}
 				</Button>

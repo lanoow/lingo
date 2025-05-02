@@ -23,7 +23,7 @@ const main = async () => {
       db.delete(schema.lessons),
       db.delete(schema.courses),
       db.delete(schema.challengeOptions),
-      // db.delete(schema.userSubscription),
+      db.delete(schema.userSubscription),
     ]);
 
     // Insert courses
@@ -41,13 +41,13 @@ const main = async () => {
         .values([
           {
             courseId: course.id,
-            title: "Unit 1",
+            title: "Unit 1 - Spanish",
             description: `Learn the basics of ${course.title}`,
             order: 1,
           },
           {
             courseId: course.id,
-            title: "Unit 2",
+            title: "Unit 2 - Spanish",
             description: `Learn intermediate ${course.title}`,
             order: 2,
           },
@@ -59,11 +59,11 @@ const main = async () => {
         const lessons = await db
           .insert(schema.lessons)
           .values([
-            { unitId: unit.id, title: "Nouns", order: 1 },
-            { unitId: unit.id, title: "Verbs", order: 2 },
-            { unitId: unit.id, title: "Adjectives", order: 3 },
-            { unitId: unit.id, title: "Phrases", order: 4 },
-            { unitId: unit.id, title: "Sentences", order: 5 },
+            { unitId: unit.id, title: `Nouns - ${unit.title}`, order: 1 },
+            { unitId: unit.id, title: `Verbs - ${unit.title}`, order: 2 },
+            { unitId: unit.id, title: `Adjectives - ${unit.title}`, order: 3 },
+            { unitId: unit.id, title: `Phrases - ${unit.title}`, order: 4 },
+            { unitId: unit.id, title: `Sentences - ${unit.title}`, order: 5 },
           ])
           .returning();
 
@@ -131,14 +131,14 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: true,
                   text: "el hombre",
-                  imageSrc: "/images/man.svg",
+                  imageSrc: "/images/man.png",
                   audioSrc: "/sounds/es/man.mp3",
                 },
                 {
                   challengeId: challenge.id,
                   correct: false,
                   text: "la mujer",
-                  imageSrc: "/images/woman.svg",
+                  imageSrc: "/images/woman.png",
                   audioSrc: "/sounds/es/woman.mp3",
                 },
                 {
@@ -157,7 +157,7 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: true,
                   text: "la mujer",
-                  imageSrc: "/images/woman.svg",
+                  imageSrc: "/images/woman.png",
                   audioSrc: "/sounds/es/woman.mp3",
                 },
                 {
@@ -171,7 +171,7 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: false,
                   text: "el hombre",
-                  imageSrc: "/images/man.svg",
+                  imageSrc: "/images/man.png",
                   audioSrc: "/sounds/es/man.mp3",
                 },
               ]);
@@ -183,14 +183,14 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: false,
                   text: "la mujer",
-                  imageSrc: "/images/woman.svg",
+                  imageSrc: "/images/woman.png",
                   audioSrc: "/sounds/es/woman.mp3",
                 },
                 {
                   challengeId: challenge.id,
                   correct: false,
                   text: "el hombre",
-                  imageSrc: "/images/man.svg",
+                  imageSrc: "/images/man.png",
                   audioSrc: "/sounds/es/man.mp3",
                 },
                 {
@@ -232,14 +232,14 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: false,
                   text: "el hombre",
-                  imageSrc: "/images/man.svg",
+                  imageSrc: "/images/man.png",
                   audioSrc: "/sounds/es/man.mp3",
                 },
                 {
                   challengeId: challenge.id,
                   correct: false,
                   text: "la mujer",
-                  imageSrc: "/images/woman.svg",
+                  imageSrc: "/images/woman.png",
                   audioSrc: "/sounds/es/woman.mp3",
                 },
                 {
@@ -258,7 +258,7 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: true,
                   text: "el robot",
-                  imageSrc: "/images/robot.svg",
+                  imageSrc: "/images/robot.png",
                   audioSrc: "/sounds/es/robot.mp3",
                 },
                 {
@@ -298,7 +298,7 @@ const main = async () => {
                   challengeId: challenge.id,
                   correct: false,
                   text: "el hombre",
-                  imageSrc: "/images/man.svg",
+                  imageSrc: "/images/man.png",
                   audioSrc: "/sounds/es/man.mp3",
                 },
               ]);

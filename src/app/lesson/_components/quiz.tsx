@@ -1,6 +1,6 @@
 "use client";
 
-import type { challengeOptions, challenges } from "@/db/schema";
+import type { challengeOptions, challenges, userSubscription } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./question-bubble";
@@ -26,8 +26,9 @@ type Props = {
 		completed: boolean;
 		challengeOptions: typeof challengeOptions.$inferSelect[];
 	})[];
-	// biome-ignore lint/suspicious/noExplicitAny: temporary
-	userSubscription: any;
+	userSubscription: typeof userSubscription.$inferSelect & {
+		isActive: boolean;
+	} | null;
 }
 
 export const Quiz = ({
@@ -190,10 +191,12 @@ export const Quiz = ({
 						<ResultCard
 							variant="points"
 							value={challenges.length * 10}
+							hasActiveSubscription={!!userSubscription?.isActive}
 						/>
 						<ResultCard
 							variant="hearts"
 							value={hearts}
+							hasActiveSubscription={!!userSubscription?.isActive}
 						/>
 					</div>
 				</div>

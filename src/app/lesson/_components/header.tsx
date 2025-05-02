@@ -35,7 +35,7 @@ export const Header = ({
 				/>
 
 				{hasActiveSubscription ? (
-					<InfinityIcon className="stroke-3 size-6" />
+					<InfinityIcon className="stroke-3 size-6 shrink-0" />
 				) : hearts}
 			</div>
 		</header>
