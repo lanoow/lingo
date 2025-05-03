@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
 	req: Request,
-	{ params }: { params: { courseId: number } },
+	{ params }: { params: Promise<{ courseId: number }> },
 ) {
 	const isAdmin = await getIsAdmin();
 
@@ -14,7 +14,7 @@ export async function GET(
 		return new NextResponse("Unauthorized", { status: 401 });
 	}
 
-	const { courseId } = params;
+	const { courseId } = await params;
 
 	const data = await db.query.courses.findFirst({
 		where: eq(courses.id, courseId),
@@ -29,7 +29,7 @@ export async function GET(
 
 export async function PUT(
 	req: Request,
-	{ params }: { params: { courseId: number } },
+	{ params }: { params: Promise<{ courseId: number }>},
 ) {
 	const isAdmin = await getIsAdmin();
 
@@ -37,7 +37,7 @@ export async function PUT(
 		return new NextResponse("Unauthorized", { status: 401 });
 	}
 
-	const { courseId } = params;
+	const { courseId } = await params;
 
 	const body = await req.json();
 
@@ -62,7 +62,7 @@ export async function PUT(
 
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { courseId: number } },
+	{ params }: { params: Promise<{ courseId: number }>},
 ) {
 	const isAdmin = await getIsAdmin();
 
@@ -70,7 +70,7 @@ export async function DELETE(
 		return new NextResponse("Unauthorized", { status: 401 });
 	}
 
-	const { courseId } = params;
+	const { courseId } = await params;
 
 	const data = await db
 		.delete(courses)
