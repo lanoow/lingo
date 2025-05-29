@@ -30,7 +30,7 @@ const main = async () => {
     const courses = await db
       .insert(schema.courses)
       .values([
-        { title: "Spanish", imageSrc: "/images/flags/es.svg" },
+        { title: "Испански", imageSrc: "/images/flags/es.svg" },
       ])
       .returning();
 
@@ -41,13 +41,13 @@ const main = async () => {
         .values([
           {
             courseId: course.id,
-            title: "Unit 1 - Spanish",
+            title: `Unit 1 - ${course.title}`,
             description: `Научете основите на ${course.title}`,
             order: 1,
           },
           {
             courseId: course.id,
-            title: "Unit 2 - Spanish",
+            title: `Unit 2 - ${course.title}`,
             description: `Научете междинно ниво на ${course.title}`,
             order: 2,
           },
