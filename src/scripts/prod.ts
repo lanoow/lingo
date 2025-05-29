@@ -30,7 +30,7 @@ const main = async () => {
     const courses = await db
       .insert(schema.courses)
       .values([
-        { title: "Испански", imageSrc: "/images/flags/es.svg" },
+        { title: "Spanish", imageSrc: "/images/flags/es.svg" },
       ])
       .returning();
 
@@ -42,13 +42,13 @@ const main = async () => {
           {
             courseId: course.id,
             title: `Unit 1 - ${course.title}`,
-            description: `Научете основите на ${course.title}`,
+            description: `Learn the basics of ${course.title}`,
             order: 1,
           },
           {
             courseId: course.id,
             title: `Unit 2 - ${course.title}`,
-            description: `Научете междинно ниво на ${course.title}`,
+            description: `Learn intermediate ${course.title}`,
             order: 2,
           },
         ])
@@ -59,11 +59,11 @@ const main = async () => {
         const lessons = await db
           .insert(schema.lessons)
           .values([
-            { unitId: unit.id, title: `Съществителни - ${unit.title}`, order: 1 },
-            { unitId: unit.id, title: `Глаголи - ${unit.title}`, order: 2 },
-            { unitId: unit.id, title: `Прилагателни - ${unit.title}`, order: 3 },
-            { unitId: unit.id, title: `Фрази - ${unit.title}`, order: 4 },
-            { unitId: unit.id, title: `Изречения - ${unit.title}`, order: 5 },
+            { unitId: unit.id, title: `Nouns - ${unit.title}`, order: 1 },
+            { unitId: unit.id, title: `Verbs - ${unit.title}`, order: 2 },
+            { unitId: unit.id, title: `Adjectives - ${unit.title}`, order: 3 },
+            { unitId: unit.id, title: `Phrases - ${unit.title}`, order: 4 },
+            { unitId: unit.id, title: `Sentences - ${unit.title}`, order: 5 },
           ])
           .returning();
 
@@ -75,49 +75,49 @@ const main = async () => {
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "el hombre"?',
+                question: 'Which one of these is "the man"?',
                 order: 1,
               },
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "la mujer"?',
+                question: 'Which one of these is "the woman"?',
                 order: 2,
               },
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "el chico"?',
+                question: 'Which one of these is "the boy"?',
                 order: 3,
               },
               {
                 lessonId: lesson.id,
                 type: "ASSIST",
-                question: '"el hombre"',
+                question: '"the man"',
                 order: 4,
               },
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "el zombie"?',
+                question: 'Which one of these is "the zombie"?',
                 order: 5,
               },
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "el robot"?',
+                question: 'Which one of these is "the robot"?',
                 order: 6,
               },
               {
                 lessonId: lesson.id,
                 type: "SELECT",
-                question: 'Кое от тези е "la nina"?',
+                question: 'Which one of these is "the girl"?',
                 order: 7,
               },
               {
                 lessonId: lesson.id,
                 type: "ASSIST",
-                question: '"el zombie"',
+                question: '"the zombie"',
                 order: 8,
               },
             ])
