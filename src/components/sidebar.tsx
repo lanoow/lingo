@@ -49,6 +49,12 @@ export const Sidebar = ({ className }: Props) => {
 					href="/shop"
 					iconSrc="/images/shop.svg"
 				/>
+
+				<SidebarItem
+					label="Dictionary"
+					href="/dictionary"
+					iconSrc="/images/dictionary.png"
+				/>
 			</div>
 
 			<div className="p-4">
